@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Roles {
+  Client
+  Colaborador
+}
+
+model User {
+  id                String              @id @default(uuid())
+  username          String
+  password          String
+  role              Roles
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime?           @default(now()) @map("updated_at")
+  deletedAt         DateTime?           @map("deleted_at")
+  Complaint_Message Complaint_Message[]
+
+  @@map("Users")
+}
+
+model Client {
+  id                String              @id @default(uuid())
+  email             String
+  name              String?             @default(value: "Cliente desconhecido")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  Complaint         Complaint[]
+  Complaint_Message Complaint_Message[]
+
+  @@map("Clients")
+}
+
+model Complaint {
+  id                String              @id @default(uuid())
+  client_id         String?
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @default(now()) @map("updated_at")
+  Client            Client?             @relation(fields: [client_id], references: [id])
+  Complaint_Message Complaint_Message[]
+  Complaint_status  Complaint_Status[]
+
+  @@map("Complaints")
+}
+
+model Complaint_Status {
+  id           String     @id @default(uuid())
+  complaint_id String?
+  context      String?    @default(value: "Cliente")
+  status       String     @default(value: "Pendente")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  Complaint    Complaint? @relation(fields: [complaint_id], references: [id])
+
+  @@map("Complaint_Status")
+}
+
+model Complaint_Message {
+  id           String  @id @default(uuid())
+  complaint_id String?
+  user_id      String?
+  client_id    String?
+  area         String
+  message      String  @db.Text()
+  attachments  String  @db.VarChar(1000)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime?  @default(now()) @map("updated_at")
+  deletedAt DateTime?  @map("deleted_at")
+  Complaint Complaint? @relation(fields: [complaint_id], references: [id])
+  User      User?      @relation(fields: [user_id], references: [id])
+  Client    Client?    @relation(fields: [client_id], references: [id])
+
+  @@map("Complaint_Messages")
+}
