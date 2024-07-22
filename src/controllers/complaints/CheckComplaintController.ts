@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { CheckComplaintService } from '../../services/compplaints/CheckComplaintService';
-import { ComplaintsRepository } from '../../repositorys/complaints/ComplaintsRepository';
+
 
 
 
@@ -13,9 +13,7 @@ class CheckComplaintController {
 
         try {
 
-            const complaintRepository = new ComplaintsRepository();
-            const service = new CheckComplaintService(complaintRepository);
-
+            const service = new CheckComplaintService();
             const result = await service.execute(id);
 
             return response.json(result);

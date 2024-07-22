@@ -1,4 +1,5 @@
-import { complaintSave, IComplaintsRepository } from "../../repositorys/complaints/IComplaintsRepository";
+import ComplaintsRepository from "../../repositorys/complaints/ComplaintsRepository";
+import { IGetcomplaints } from "../../repositorys/complaints/types";
 
 
 
@@ -6,21 +7,16 @@ import { complaintSave, IComplaintsRepository } from "../../repositorys/complain
 
 class CheckComplaintService {
 
-    constructor(private IComplaintRepository: IComplaintsRepository) { }
+    async execute(id: string): Promise< IGetcomplaints | Error> {
 
-    async execute(id: string): Promise<complaintSave | Error> {
-
-        const complaint = await this.IComplaintRepository.findById(id);
-
+        let complaint = await ComplaintsRepository.findById(id)
         if (!complaint) {
             throw new Error('Registro não existe!');
         }
-
-
-        complaint.attachments = JSON.parse(complaint.attachments)
-
+        
         return complaint;
     }
 }
 
 export { CheckComplaintService };
+

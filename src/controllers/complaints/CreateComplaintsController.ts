@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
-import { ComplaintsRepository } from '../../repositorys/complaints/ComplaintsRepository';
 import { CreateComplaintsService } from '../../services/compplaints/CreateComplaintsService';
-import { ClientsRepository } from '../../repositorys/clients/ClientsRepository';
 
 
 
@@ -10,24 +8,19 @@ class CreateComplaintsController {
 
     async handle(request: Request, response: Response) {
 
-        let attachments: {name: string, newName: string} = {name: '', newName: ''};
+        let attachments: string[] = []
 
         const {area, email, message, name} = request.body;
 
         if (request.file) {
-            attachments = {
-                    name: request.file.originalname,
-                    newName: request.file.filename
-                }
-            
+            attachments.push(request.file.originalname, request.file.filename )
         }  
+        // original: request.file.originalname,
+        // newName: request.file.filename
         
         try {
 
-            const complaintsRepository = new ComplaintsRepository();
-            const clientsRepository = new ClientsRepository()
-            const service = new CreateComplaintsService(complaintsRepository, clientsRepository);
-
+            const service = new CreateComplaintsService();
             const result = await service.execute({area, attachments: JSON.stringify(attachments), email, message, name})
 
             return response.status(201).json(result);

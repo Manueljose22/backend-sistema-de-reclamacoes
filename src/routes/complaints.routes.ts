@@ -2,7 +2,6 @@ import { Router } from "express";
 import { filesUpload } from "../middlewares/upload/filesUpload";
 import CreateComplaintsController from "../controllers/complaints/CreateComplaintsController";
 import CheckComplaintController from "../controllers/complaints/CheckComplaintController";
-import { verifyFildsMiddleware } from "../middlewares/virifeyFildsMiddleware";
 
 
 const router = Router();

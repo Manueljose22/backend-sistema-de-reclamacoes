@@ -1,25 +1,24 @@
 import { prismaClient } from "../../db/prismaClient";
-import { complaintRequest, complaintSave, IComplaintsRepository } from "./IComplaintsRepository";
+import { complaintRequest, IGetcomplaints } from "./types";
 
 
 
 
-export class ComplaintsRepository implements IComplaintsRepository {
+class ComplaintsRepository {
 
-    async save({ area, attachments, message, client_id }: Omit<complaintRequest, 'name' | 'email' | 'status'>): Promise<complaintRequest> {
+    async save({ area, attachments, message, client_id }: Omit<complaintRequest, 'name' | 'email' | 'status'>) {
 
-        
         const complaint = await prismaClient.complaint.create({
             data: {
                 client_id: client_id,
-               
+
             }
         })
 
         await prismaClient.complaint_Message.create({
             data: {
                 area,
-                message, 
+                message,
                 attachments,
                 complaint_id: complaint.id,
                 client_id: client_id
@@ -35,7 +34,8 @@ export class ComplaintsRepository implements IComplaintsRepository {
         return complaint;
     }
 
-    async findById(id: string): Promise<complaintSave |  null> {
+    async findById(id: string): Promise<IGetcomplaints | null> {
+       
         const complaint = await prismaClient.complaint.findFirst({
             where: {
                 id
@@ -45,15 +45,38 @@ export class ComplaintsRepository implements IComplaintsRepository {
                         email: true,
                         name: true
                     }
-                }
+                },
+                Complaint_Message: {
+                    select: {
+                        area: true,
+                        message: true,
+                        client_id: true,
+                        user_id: true,
+                        attachments: true,
+                        createdAt: true,
+                        User: {
+                            select: {
+                                username: true
+                            }
+                        }
+                    }
+                },
+                Complaint_status: {
+                    select: {
+                        status: true,
+                        context: true
+                    }
+                },
+
             }
-        })
+        });
+       
 
         return complaint;
     }
 
-    async findAll(): Promise<complaintSave[] | null> {
-        
+    async findAll(){
+
         const complaints = await prismaClient.complaint.findMany({
             include: {
                 Client: {
@@ -69,3 +92,5 @@ export class ComplaintsRepository implements IComplaintsRepository {
     }
 
 }
+
+export default new ComplaintsRepository;

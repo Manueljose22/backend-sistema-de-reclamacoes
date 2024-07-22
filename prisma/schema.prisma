@@ -7,16 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Roles {
-  Client
-  Colaborador
-}
 
 model User {
   id                String              @id @default(uuid())
   username          String
   password          String
-  role              Roles
+  role              String
   createdAt         DateTime            @default(now()) @map("created_at")
   updatedAt         DateTime?           @default(now()) @map("updated_at")
   deletedAt         DateTime?           @map("deleted_at")
@@ -76,3 +72,13 @@ model Complaint_Message {
 
   @@map("Complaint_Messages")
 }
+model Area {
+  id           String  @id @default(uuid())
+  area String
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime?  @default(now()) @map("updated_at")
+  deletedAt DateTime?  @map("deleted_at")
+
+  @@map("Complaint_Areas")
+}
+

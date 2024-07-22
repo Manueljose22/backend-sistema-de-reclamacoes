@@ -1,12 +1,12 @@
 import { prismaClient } from "../../db/prismaClient";
-import { clientRequest, clientSave, IClientsRepository } from "./IClientsRepository";
+import { clientRequest} from "./types";
 
 
 
 
-export class ClientsRepository implements IClientsRepository {
+export class ClientsRepository {
     
-    async save({email, name}: clientRequest): Promise<clientSave> {
+    async save({email, name}: clientRequest){
         const client = await prismaClient.client.create({
             data: {
                 email,
@@ -17,7 +17,7 @@ export class ClientsRepository implements IClientsRepository {
         return client
     }
 
-    async findByEmail(email: string): Promise<clientSave | null> {
+    async findByEmail(email: string) {
       
         const client = await prismaClient.client.findFirst({
         where: {
@@ -29,3 +29,5 @@ export class ClientsRepository implements IClientsRepository {
     }
 
 }
+
+export default new ClientsRepository
