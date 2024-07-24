@@ -23,7 +23,7 @@ export const sendEmail = async (email: string, purl: string) => {
     });
 
     const mailOptions: IMailOptions = {
-        from: '"SISTEMA DE RECLAMAÇÔES" <techstar22@outlook.com>',
+        from: '"SISTEMA DE RECLAMAÇÔES" <techstar24@outlook.com>',
         to: email,
         subject: 'Reclamação submetida com sucesso',
         text: 'Muito obrigado por entrar em conctato, responderemos em breve.',
@@ -32,7 +32,7 @@ export const sendEmail = async (email: string, purl: string) => {
             <body>
                 <h3>SISTEMA DE RECLAMAÇÔES</h3><br>
                 <p>Clique no link abaixo para aceder a sua reclamação:</p><br>
-                <a href=""> Sua reclamação ${purl} </a>
+                <a href="localhost:5000/${purl}"> Sua reclamação  </a>
             </body>
             </html>
               `

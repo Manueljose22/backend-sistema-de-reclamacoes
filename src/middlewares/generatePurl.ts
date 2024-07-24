@@ -1,7 +1,7 @@
 
 const generatePurl = async (complaint_id: string) => {
     
-    return  `localhost:5000/complaint/check/${complaint_id}`;
+    return  `show_complaint/${complaint_id}`;
 }
 
 

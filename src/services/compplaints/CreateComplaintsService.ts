@@ -1,6 +1,4 @@
-import { sendMailgun } from "../../middlewares/email/mailgun";
 import { sendEmail } from "../../middlewares/email/sendEmail";
-import { IMailOptions } from "../../middlewares/email/types";
 import { generatePurl } from "../../middlewares/generatePurl";
 import ClientsRepository  from "../../repositorys/clients/ClientsRepository";
 import ComplaintsRepository from "../../repositorys/complaints/ComplaintsRepository";
@@ -40,7 +38,6 @@ class CreateComplaintsService {
 
         // Send email
         sendEmail(email, purl);
-        
         
         return { name, email, purl};
     }
