@@ -75,7 +75,7 @@ class ComplaintsRepository {
         return complaint;
     }
 
-    async findAll(){
+    async findAll(): Promise<IGetcomplaints[] | null>{
 
         const complaints = await prismaClient.complaint.findMany({
             include: {
@@ -83,6 +83,36 @@ class ComplaintsRepository {
                     select: {
                         email: true,
                         name: true
+                    }
+                },
+                Complaint_Message: {
+                    select: {
+                        area: true,
+                        attachments: true,
+                        client_id: true,
+                        complaint_id: true,
+                        message: true,
+                        Complaint: true,
+                        createdAt: true,
+                        user_id: true,
+                        id: true,
+                        User: {
+                            select:{
+                                id: true,
+                                role: true,
+                                username: true,
+                            }
+                        }
+                    }
+                },
+                Complaint_status: {
+                    select: {
+                        id: true,
+                        complaint_id: true,
+                        Complaint: true,
+                        context: true,
+                        status: true,
+                        createdAt: true
                     }
                 }
             }
