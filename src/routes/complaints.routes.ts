@@ -7,7 +7,6 @@ import GetAllComplaintController from "../controllers/complaints/GetAllComplaint
 
 const router = Router();
 
-// router.get('/');
 router.post('/create', filesUpload.single('attachments'), CreateComplaintsController.handle);
 router.get('/check/:id', CheckComplaintController.handle);
 router.get('/', GetAllComplaintController.handle);
