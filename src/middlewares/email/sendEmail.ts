@@ -12,7 +12,7 @@ export const sendEmail = async (email: string, purl: string) => {
     const transporter = createTransport({
         port: 587,
         secure: false,
-        service: 'hotmail',
+        host: 'smtp.office365.com',
         auth: {
             user: process.env.OUTLOOK_USER,
             pass: process.env.OUTLOOK_PASS,
@@ -32,7 +32,7 @@ export const sendEmail = async (email: string, purl: string) => {
             <body>
                 <h3>SISTEMA DE RECLAMAÇÔES</h3><br>
                 <p>Clique no link abaixo para aceder a sua reclamação:</p><br>
-                <a href="localhost:5000/${purl}"> Sua reclamação  </a>
+                <p>http://localhost:5000/${purl} </p>
             </body>
             </html>
               `
